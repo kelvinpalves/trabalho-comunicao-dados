@@ -50,7 +50,6 @@ if modoDebug:
 
 imagem = grafico.figure(figsize=(8, 2.5)) 
 
-grafico.title('Codificacao NRZ-L')
 grafico.ylim(-2, 2)
 grafico.plot(listaEixoX, listaEixoY)
 
@@ -83,8 +82,6 @@ sinalFinal = (listaASK * listaSinal)
 
 imagem = grafico.figure(figsize=(8, 2.5)) 
 
-grafico.title('ASK')
-grafico.ylabel('Amplitude')
 grafico.ylim(-2, 2)
 grafico.plot(listaTempo, sinalFinal)
 
@@ -98,7 +95,6 @@ listaFFT        = fft / dimensaoSinal
 
 imagem = grafico.figure(figsize=(8, 2.5)) 
 
-grafico.title('Dominio da Frequencia')
 grafico.plot(listaFrequencia,listaFFT.real)
 
 imagem.savefig(FILE_FFT)
@@ -108,6 +104,46 @@ demodulacao = numpy.fft.ifft(fft)
 imagem = grafico.figure(figsize=(8, 2.5)) 
 
 grafico.plot(listaTempo, demodulacao.real)
-grafico.title('Demodulacao')
 
 imagem.savefig(FILE_IFFT)
+
+inversor = (listaASK / demodulacao)
+
+sinalChegada = []
+
+salto = int(numpy.sqrt(len(demodulacao)))
+
+if (len(listaBits) == 8):
+    salto = dimensao
+
+for i in range(0,len(demodulacao), salto):
+    if inversor[i] > 0:
+        sinalChegada.append(1)
+    if inversor[i] < 0:
+        sinalChegada.append(1)
+    if inversor[i] == 0:
+        sinalChegada.append(0)
+
+for i in range(0,len(sinalChegada)):
+    if(sinalChegada[i]==0):
+        sinalChegada[i]=1
+    else:
+        sinalChegada[i]=0
+        
+aux=''
+for i in range(0,len(sinalChegada)):
+    aux=aux+str(sinalChegada[i])
+
+xmin = 0 
+xmax = 8
+listaAuxiliar = []
+for i in range(0, (len(aux)/8)):
+    listaAuxiliar.append(aux[xmin:xmax])
+    xmin = xmin + 8
+    xmax = xmax + 8
+
+mensagem=''
+for i in range(0,len(listaAuxiliar)):
+    mensagem=mensagem+(unichr(int(listaAuxiliar[i],2)))
+
+print 'Mensagem recebida: ', mensagem
