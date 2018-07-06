@@ -14,7 +14,7 @@
 </head>
 <body>
 
-    <div class="container" style="padding-top: 10px" ng-controller="Principal as vm">
+    <div class="container-fluid" style="padding-top: 10px" ng-controller="Principal as vm">
         <div class="panel panel-primary">
             <div class="panel-heading">Trabalho de Comunicação de Dados - 2018/01</div>
             <div class="panel-body">
@@ -33,11 +33,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <button type="submit" ng-disabled="formulario.$invalid" class="btn btn-primary">Transmitir</button>
-                        </div>
-                    </div>
                 </form>
 
                 <div class="row" style="margin-top: 5px;" ng-if="vm.model.mensagemSaida.length > 0">
@@ -45,15 +40,22 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th style="width: 20%; vertical-align: middle; background-color: #b1c6d7;">
+                                    <th style="width: 10%; vertical-align: middle; background-color: #b1c6d7;">
                                         Binário: 
                                     </th>
-                                    <th colspan="2">
+                                    <th>
                                         <span ng-repeat="dados in vm.model.mensagemSaida">
                                             {{ dados.binario}}&nbsp;
                                         </span>
                                     </th>
                                 </tr>
+                            </thead>
+                        </table>
+                    </div>
+
+                    <div class="col-md-3">
+                        <table class="table table-bordered">
+                            <thead>
                                 <tr>
                                     <th style="background-color: #b1c6d7;">Caractere</th>
                                     <th style="background-color: #b1c6d7;">Código ASCII</th>
@@ -69,12 +71,22 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="col-md-9">
+                        <div class="col-md-12">
+                            <img style="width: 100%;" src="backend/graficoListaBits.php?binario={{ vm.model.stringBinarioSemEspaco }}">
+                        </div>
+                        <div class="col-md-12" style="margin-top: 3px;">
+                            <img style="width: 100%;" src="backend/graficoASK.php?binario={{ vm.model.stringBinarioSemEspaco }}&frequencia={{ vm.model.frequencia }}">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+    <script type="text/javascript" src="bower_components/chart.js/dist/Chart.min.js"></script>
+    <script type="text/javascript" src="bower_components/angular-chart.js/dist/angular-chart.min.js"></script>
 
     <script type="text/javascript" src="src/app/app.module.js"></script>
     <script type="text/javascript" src="src/app/main.js"></script>
