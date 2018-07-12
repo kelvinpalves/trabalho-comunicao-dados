@@ -1,7 +1,14 @@
+#!/usr/bin/python
+
 import numpy
 import matplotlib
 import matplotlib.pyplot as grafico
 from argparse import ArgumentParser
+
+FILE_ASK     = 'tmp/grafico-ask.png'
+FILE_NRZ     = 'tmp/grafico-nrz.png'
+FILE_FFT     = 'tmp/grafico-fft.png'
+FILE_IFFT    = 'tmp/grafico-ifft.png'
 
 parser = ArgumentParser()
 parser.add_argument("-t", "--text", dest="entradaTexto")
@@ -10,10 +17,6 @@ parser.add_argument("-d", "--debug", dest="modoDebug", default=False)
 
 args = parser.parse_args()
 
-FILE_ASK     = 'tmp/grafico-ask.png'
-FILE_NRZ     = 'tmp/grafico-nrz.png'
-FILE_FFT     = 'tmp/grafico-fft.png'
-FILE_IFFT    = 'tmp/grafico-ifft.png'
 entradaTexto = args.entradaTexto
 frequencia   = float(args.frequencia)
 modoDebug    = args.modoDebug
@@ -104,6 +107,7 @@ demodulacao = numpy.fft.ifft(fft)
 imagem = grafico.figure(figsize=(8, 2.5)) 
 
 grafico.plot(listaTempo, demodulacao.real)
+grafico.ylim(-2, 2)
 
 imagem.savefig(FILE_IFFT)
 
